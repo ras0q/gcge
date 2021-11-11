@@ -1,0 +1,2 @@
+# gcg
+Go Constructor Generator
