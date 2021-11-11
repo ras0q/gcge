@@ -4,9 +4,10 @@ BLUE    := \033[34m
 RESET   := \033[0m
 USE_MA_MODE := echo -e "$(BLUE)INFO: $(RESET)Running in module-aware mode"
 
-build:
+install:
 	@go mod tidy
 	@go install
+i: install
 
 .PHONY: run
 run:
