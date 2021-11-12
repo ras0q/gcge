@@ -2,13 +2,14 @@ name: Go
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
 
 jobs:
   setup:
     runs-on: ubuntu-latest
-    steps:   
+    steps:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -25,18 +26,18 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: go build -v ./...
+      - uses: actions/checkout@v2
+      - name: Build
+        run: go build -v ./...
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Test
-      run: go test -v ./...
-      
+      - uses: actions/checkout@v2
+      - name: Test
+        run: go test -v ./...
+
   lint:
     needs: setup
     runs-on: ubuntu-latest
