@@ -26,12 +26,21 @@ func (r *parserRepository) ParseFile(filename string) (*model.File, error) {
 		return nil, errors.Wrap(err, "Could not parse file")
 	}
 
-	packageName := f.Name.Name
+	packageName := r.parsePkgName(f.Name)
 	imports := r.parseImportSpecs(f.Imports)
+	structs := r.parseObjectsToStructs(f.Scope.Objects)
 
+	return model.NewFile(packageName, imports, structs), nil
+}
+
+func (r *parserRepository) parsePkgName(name *ast.Ident) string {
+	return name.Name
+}
+
+func (r *parserRepository) parseObjectsToStructs(obj map[string]*ast.Object) []model.Struct {
 	structs := make([]model.Struct, 0, MAXCAP)
 
-	for name, obj := range f.Scope.Objects {
+	for name, obj := range obj {
 		ts, ok := obj.Decl.(*ast.TypeSpec)
 		if !ok {
 			continue
@@ -47,7 +56,7 @@ func (r *parserRepository) ParseFile(filename string) (*model.File, error) {
 		structs = append(structs, *model.NewStruct(name, flds))
 	}
 
-	return model.NewFile(packageName, imports, structs), nil
+	return structs
 }
 
 func (r *parserRepository) parseImportSpecs(is []*ast.ImportSpec) []model.Import {
