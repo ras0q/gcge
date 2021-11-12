@@ -1,5 +1,8 @@
 SHELL   := /bin/bash
 
+build:
+	@go build -v ./...
+
 install:
 	@go mod tidy
 	@go install
