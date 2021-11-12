@@ -24,9 +24,7 @@ func NewGeneratorRepository(opts *imports.Options) GeneratorRepository {
 }
 
 var fmap = template.FuncMap{
-	"title": func(str string) string {
-		return strings.Title(str)
-	},
+	"title": strings.Title,
 }
 
 func (r *generatorRepository) GenerateConstructors(file *model.File) (string, error) {
