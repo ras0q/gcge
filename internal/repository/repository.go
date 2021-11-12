@@ -1,11 +1,13 @@
 package repository
 
 type Repositories struct {
-	Parser ParserRepository
+	Generator GeneratorRepository
+	Parser    ParserRepository
 }
 
-func NewRepositories(parser ParserRepository) *Repositories {
+func NewRepositories(generator GeneratorRepository, parser ParserRepository) *Repositories {
 	return &Repositories{
-		Parser: parser,
+		Generator: generator,
+		Parser:    parser,
 	}
 }

@@ -1,0 +1,18 @@
+{{define "new"}}{{if .IsPrivate}}new{{else}}New{{end}}{{end -}}
+{{define "args"}}{{range .}}{{.Name.Argument}} {{.Type.Prefix}}{{.Type.Package}}{{.Type.Name}}, {{end}}{{end -}}
+
+{{define "function" -}}
+{{$f := . -}}
+package {{$f.Package}}
+{{range $s := $f.Structs}}
+func {{template "new" $s}}{{title $s.Name}} ({{template "args" $s.Fields}}) *{{$s.Name}} {
+  return &{{$s.Name}} {
+  {{- range $v := $s.Fields}}
+    {{$v.Name.Original}}: {{$v.Name.Argument}},
+  {{- end}}
+  }
+}
+{{end}}
+{{end}}
+
+{{- template "function" .}}

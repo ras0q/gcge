@@ -10,13 +10,15 @@ import (
 	"github.com/Ras96/gcg/internal/handler"
 	"github.com/Ras96/gcg/internal/repository"
 	"github.com/google/wire"
+	"golang.org/x/tools/imports"
 )
 
 // Injectors from wire.go:
 
-func NewHandlers() handler.Handlers {
+func NewHandlers(opts *imports.Options) handler.Handlers {
+	generatorRepository := repository.NewGeneratorRepository(opts)
 	parserRepository := repository.NewParserRepository()
-	repositories := repository.NewRepositories(parserRepository)
+	repositories := repository.NewRepositories(generatorRepository, parserRepository)
 	handlers := handler.NewHandlers(repositories)
 	return handlers
 }
@@ -24,5 +26,7 @@ func NewHandlers() handler.Handlers {
 // wire.go:
 
 var (
-	mainSet = wire.NewSet(repository.NewParserRepository, repository.NewRepositories, handler.NewHandlers)
+	handlerSet = wire.NewSet(handler.NewHandlers)
+
+	repositorySet = wire.NewSet(repository.NewRepositories, repository.NewParserRepository, repository.NewGeneratorRepository)
 )

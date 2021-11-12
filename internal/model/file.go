@@ -12,8 +12,9 @@ type Import struct {
 }
 
 type Struct struct {
-	Name   string
-	Fields []Field
+	Name      string
+	Fields    []Field
+	IsPrivate bool // TODO
 }
 
 type Field struct {
@@ -41,40 +42,4 @@ func (p Prefix) Add(following string) Prefix {
 	return p + Prefix(following)
 }
 
-func NewFile(pkg string, imports []Import, structs []Struct) *File {
-	return &File{
-		Package: pkg,
-		Imports: imports,
-		Structs: structs,
-	}
-}
-
-func NewStruct(name string, fields []Field) *Struct {
-	return &Struct{
-		Name:   name,
-		Fields: fields,
-	}
-}
-
-func NewField(name *Name, typ *Type) *Field {
-	return &Field{
-		Name: *name,
-		Type: *typ,
-	}
-}
-
-func NewName(original string, argument string) *Name {
-	return &Name{
-		Original: original,
-		Argument: argument,
-	}
-}
-
-func NewType(isStar bool, prefix Prefix, pkg string, name string) *Type {
-	return &Type{
-		IsStar:  isStar,
-		Prefix:  prefix,
-		Package: pkg,
-		Name:    name,
-	}
-}
+type Filename string

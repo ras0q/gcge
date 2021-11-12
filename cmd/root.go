@@ -32,7 +32,7 @@ import (
 
 var cfgFile string
 
-var h = injector.NewHandlers() // TODO: globalでない方法で管理する
+var h = injector.NewHandlers(nil) // TODO: globalでない方法で管理する
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{

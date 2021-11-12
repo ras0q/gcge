@@ -12,6 +12,34 @@ import (
 
 const MAXCAP = 1000
 
+var identifiers = map[string]string{
+	"break":       "",
+	"case":        "",
+	"chan":        "",
+	"const":       "",
+	"continue":    "",
+	"default":     "",
+	"defer":       "",
+	"else":        "",
+	"fallthrough": "",
+	"for":         "",
+	"func":        "",
+	"go":          "",
+	"goto":        "",
+	"if":          "",
+	"import":      "",
+	"interface":   "",
+	"map":         "",
+	"package":     "",
+	"range":       "",
+	"return":      "",
+	"select":      "",
+	"struct":      "",
+	"switch":      "",
+	"type":        "",
+	"var":         "",
+}
+
 type parserRepository struct{}
 
 func NewParserRepository() ParserRepository {
@@ -77,7 +105,7 @@ func (r *parserRepository) parseFields(f []*ast.Field) []model.Field {
 
 	for i, fld := range f {
 		org := fld.Names[0].Name
-		fname := model.NewName(org, lower(org)) // TODO: lowerを柔軟にする
+		fname := model.NewName(org, toArgName(org))
 
 		ftype := model.Type{}
 		if starExpr, ok := fld.Type.(*ast.StarExpr); ok {
@@ -107,6 +135,11 @@ func (r *parserRepository) parseExpr(f ast.Expr, prefix model.Prefix, isStar boo
 	}
 }
 
-func lower(s string) string {
-	return strings.ToLower(s)
+func toArgName(s string) string {
+	l := strings.ToLower(s)
+	if _, ok := identifiers[l]; ok {
+		return l + "_"
+	}
+
+	return l
 }
