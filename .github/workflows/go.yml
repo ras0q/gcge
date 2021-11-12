@@ -42,5 +42,5 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - uses: reviewdog/action-golangci-lint@v2
       - name: Lint
+        uses: reviewdog/action-golangci-lint@v2
