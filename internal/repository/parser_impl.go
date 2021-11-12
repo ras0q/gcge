@@ -91,9 +91,12 @@ func (r *parserRepository) parseImportSpecs(is []*ast.ImportSpec) []model.Import
 	imports := make([]model.Import, len(is))
 
 	for i, imp := range is {
-		imports[i] = model.Import{
-			Name: imp.Name.Name,
-			Path: imp.Path.Value,
+		if imp.Name != nil {
+			imports[i].Name = imp.Name.Name
+		}
+
+		if imp.Path != nil {
+			imports[i].Path = imp.Path.Value
 		}
 	}
 
@@ -104,6 +107,10 @@ func (r *parserRepository) parseFields(f []*ast.Field) []model.Field {
 	fields := make([]model.Field, len(f))
 
 	for i, fld := range f {
+		if len(fld.Names) == 0 {
+			continue
+		}
+
 		org := fld.Names[0].Name
 		fname := model.NewName(org, toArgName(org))
 
