@@ -14,7 +14,7 @@ import (
 
 // Injectors from wire.go:
 
-func Handlers() *handler.Handlers {
+func NewHandlers() handler.Handlers {
 	parserRepository := repository.NewParserRepository()
 	repositories := repository.NewRepositories(parserRepository)
 	handlers := handler.NewHandlers(repositories)

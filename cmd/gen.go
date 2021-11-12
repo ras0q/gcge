@@ -22,9 +22,6 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/Ras96/gcg/internal/util/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -32,18 +29,7 @@ import (
 var genCmd = &cobra.Command{
 	Use:   "gen",
 	Short: "Command \"gen\" generates constructors",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) != 1 {
-			exit(cmd, errors.New("Please provide an argument"))
-		}
-
-		file, err := handlers.Repo.Parser.ParseFile(args[0])
-		if err != nil {
-			exit(cmd, errors.Wrap(err, "Could not parse file"))
-		}
-
-		fmt.Printf("%+v\n", file)
-	},
+	Run:   h.Gen,
 }
 
 func init() {

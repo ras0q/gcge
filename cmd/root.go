@@ -25,24 +25,19 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Ras96/gcg/internal/handler"
-	"github.com/Ras96/gcg/internal/util/errors"
 	"github.com/Ras96/gcg/internal/util/injector"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var (
-	cfgFile  string
-	handlers *handler.Handlers
-)
+var cfgFile string
+
+var h = injector.NewHandlers() // TODO: globalでない方法で管理する
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use: "gcg",
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: h.Root,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -63,8 +58,6 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
-	handlers = injector.Handlers()
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -89,8 +82,4 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
-}
-
-func exit(cmd *cobra.Command, err error) {
-	errors.Exit(cmd, err)
 }

@@ -18,10 +18,10 @@ var (
 	)
 )
 
-func Handlers() *handler.Handlers {
+func NewHandlers() handler.Handlers {
 	wire.Build(
 		mainSet,
 	)
 
-	return &handler.Handlers{}
+	return nil
 }
