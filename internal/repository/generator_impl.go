@@ -3,6 +3,7 @@ package repository
 import (
 	"bufio"
 	"bytes"
+	_ "embed"
 	"strings"
 	"text/template"
 
@@ -10,6 +11,9 @@ import (
 	"github.com/Ras96/gcg/internal/util/errors"
 	"golang.org/x/tools/imports"
 )
+
+//go:embed template/constructor.tmpl
+var genTmpl []byte
 
 type generatorRepository struct {
 	Tmpl   *template.Template
@@ -28,9 +32,9 @@ var fmap = template.FuncMap{
 }
 
 func (r *generatorRepository) GenerateConstructors(file *model.File) (string, error) {
-	r.Tmpl = template.New("constructor.tmpl").Funcs(fmap)
-	if _, err := r.Tmpl.ParseFiles("./template/constructor.tmpl"); err != nil {
-		return "", errors.Wrap(err, "Could not parse template files")
+	r.Tmpl = template.New("constructor").Funcs(fmap)
+	if _, err := r.Tmpl.Parse(string(genTmpl)); err != nil {
+		return "", errors.Wrap(err, "Could not parse templates")
 	}
 
 	w := &bytes.Buffer{}
