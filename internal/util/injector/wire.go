@@ -1,5 +1,6 @@
 //go:generate go run github.com/google/wire/cmd/wire@latest
 //go:build wireinject
+// +build wireinject
 
 package injector
 
