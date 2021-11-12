@@ -1,3 +1,8 @@
+run:
+  skip-dirs:
+    - (^|/).git($|/)
+    - (^|/)tmp($|/)
+
 linters:
   enable-all: true
   disable:
@@ -11,3 +16,6 @@ linters:
     - godot
     - gochecknoinits
     - exhaustivestruct
+    - varnamelen
+    - ireturn
+    - forbidigo
