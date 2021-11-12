@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: go build -v ./...
+        run: go build -o gcg
 
   test:
     needs: build
