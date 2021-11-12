@@ -15,10 +15,11 @@ func NewImport(name string, path string) *Import {
 	}
 }
 
-func NewStruct(name string, fields []Field) *Struct {
+func NewStruct(name string, fields []Field, isPrivate bool) *Struct {
 	return &Struct{
-		Name:   name,
-		Fields: fields,
+		Name:      name,
+		Fields:    fields,
+		IsPrivate: isPrivate,
 	}
 }
 

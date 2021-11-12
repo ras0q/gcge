@@ -81,7 +81,7 @@ func (r *parserRepository) parseObjectsToStructs(obj map[string]*ast.Object) []m
 
 		flds := r.parseFields(st.Fields.List)
 
-		structs = append(structs, *model.NewStruct(name, flds))
+		structs = append(structs, *model.NewStruct(name, flds, isPrivate(name)))
 	}
 
 	return structs
@@ -142,4 +142,8 @@ func toArgName(s string) string {
 	}
 
 	return l
+}
+
+func isPrivate(s string) bool {
+	return s[:1] == strings.ToLower(s[:1])
 }
