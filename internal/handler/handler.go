@@ -15,10 +15,12 @@ func NewHandlers(repo *repository.Repositories) *Handlers {
 	}
 }
 
-func (h *Handlers) SetupGen(opts *genOpts) {
+func (h *Handlers) SetupGen(output *string) {
 	h.Gen = genHandler{
 		repo: h.Repo,
-		opts: opts,
+		opts: &genOpts{
+			output: output,
+		},
 	}
 }
 

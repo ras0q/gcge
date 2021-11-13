@@ -22,7 +22,6 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"github.com/Ras96/gcg/internal/handler"
 	"github.com/spf13/cobra"
 )
 
@@ -36,9 +35,7 @@ var genCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(genCmd)
 
-	opts := handler.NewGenOpts(
+	h.SetupGen(
 		genCmd.Flags().StringP("output", "o", "", "Output filename"),
 	)
-
-	h.SetupGen(&opts)
 }

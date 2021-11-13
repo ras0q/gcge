@@ -64,9 +64,9 @@ func (r *generatorRepository) format(w *bytes.Buffer, filename string) ([]byte, 
 	formatted, err := imports.Process(filename, w.Bytes(), r.Opts)
 	if err != nil {
 		if len(filename) == 0 {
-			fmt.Fprintln(os.Stdout, string(w.Bytes()))
+			fmt.Fprintln(os.Stdout, w.String())
 		} else {
-			ioutil.WriteFile(filename, w.Bytes(), fs.ModePerm)
+			_ = ioutil.WriteFile(filename, w.Bytes(), fs.ModePerm)
 		}
 
 		fmt.Fprintln(os.Stderr, "Error occurred. Instead, gcg output the unformatted file")

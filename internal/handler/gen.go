@@ -20,12 +20,6 @@ type genOpts struct {
 	output *string
 }
 
-func NewGenOpts(output *string) genOpts {
-	return genOpts{
-		output: output,
-	}
-}
-
 func (h *genHandler) Run(cmd *cobra.Command, args []string) {
 	if len(args) != 1 {
 		cobra.CheckErr(errors.New("Please provide an argument"))
@@ -40,6 +34,6 @@ func (h *genHandler) Run(cmd *cobra.Command, args []string) {
 	if len(*h.opts.output) == 0 {
 		fmt.Fprintln(os.Stdout, string(res))
 	} else {
-		ioutil.WriteFile(*h.opts.output, res, fs.ModePerm)
+		_ = ioutil.WriteFile(*h.opts.output, res, fs.ModePerm)
 	}
 }

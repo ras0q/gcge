@@ -89,7 +89,7 @@ func (r *parserRepository) parseFields(f []*ast.Field) []model.Field {
 
 		fname := model.NewName(org, toArgName(org))
 
-		ftype := model.Type{}
+		var ftype model.Type
 		if starExpr, ok := fld.Type.(*ast.StarExpr); ok {
 			ftype = *r.parseExpr(starExpr.X, "", true)
 		} else {
