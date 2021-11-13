@@ -25,8 +25,8 @@ func (h *genHandler) Run(cmd *cobra.Command, args []string) {
 		cobra.CheckErr(errors.New("Please provide an argument"))
 	}
 
-	file, err := h.repo.Parser.ParseFile(args[0])
-	errors.CheckErr(err, "Could not parse file")
+	file, err := h.repo.Analyzer.AnalyzeFile(args[0])
+	errors.CheckErr(err, "Could not analyze file")
 
 	res, err := h.repo.Generator.GenerateConstructors(file, *h.opts.output)
 	errors.CheckErr(err, "Could not generate constructors")

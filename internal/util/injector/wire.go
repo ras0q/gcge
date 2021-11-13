@@ -14,7 +14,7 @@ func NewHandlers() *handler.Handlers {
 	wire.Build(
 		handler.NewHandlers,
 		repository.NewRepositories,
-		repository.NewParserRepository,
+		repository.NewAnalyzerRepository,
 		repository.NewGeneratorRepository,
 	)
 

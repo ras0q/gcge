@@ -13,13 +13,13 @@ import (
 
 const MAXCAP = 1000
 
-type parserRepository struct{}
+type analyzerRepository struct{}
 
-func NewParserRepository() ParserRepository {
-	return &parserRepository{}
+func NewAnalyzerRepository() AnalyzerRepository {
+	return &analyzerRepository{}
 }
 
-func (r *parserRepository) ParseFile(filename string) (*model.File, error) {
+func (r *analyzerRepository) AnalyzeFile(filename string) (*model.File, error) {
 	fset := token.NewFileSet()
 
 	f, err := parser.ParseFile(fset, filename, nil, 0)
@@ -34,11 +34,11 @@ func (r *parserRepository) ParseFile(filename string) (*model.File, error) {
 	return model.NewFile(packageName, imports, structs), nil
 }
 
-func (r *parserRepository) parsePkgName(name *ast.Ident) string {
+func (r *analyzerRepository) parsePkgName(name *ast.Ident) string {
 	return name.Name
 }
 
-func (r *parserRepository) parseImportSpecs(is []*ast.ImportSpec) []model.Import {
+func (r *analyzerRepository) parseImportSpecs(is []*ast.ImportSpec) []model.Import {
 	imports := make([]model.Import, len(is))
 
 	for i, imp := range is {
@@ -54,7 +54,7 @@ func (r *parserRepository) parseImportSpecs(is []*ast.ImportSpec) []model.Import
 	return imports
 }
 
-func (r *parserRepository) parseObjectsToStructs(obj map[string]*ast.Object) []model.Struct {
+func (r *analyzerRepository) parseObjectsToStructs(obj map[string]*ast.Object) []model.Struct {
 	sa := convertSortedArr(obj)
 	structs := make([]model.Struct, len(sa))
 
@@ -66,7 +66,7 @@ func (r *parserRepository) parseObjectsToStructs(obj map[string]*ast.Object) []m
 	return structs
 }
 
-func (r *parserRepository) parseFields(f []*ast.Field) []model.Field {
+func (r *analyzerRepository) parseFields(f []*ast.Field) []model.Field {
 	fields := make([]model.Field, len(f))
 
 	for i, fld := range f {
@@ -93,7 +93,7 @@ func (r *parserRepository) parseFields(f []*ast.Field) []model.Field {
 	return fields
 }
 
-func (r *parserRepository) parseExpr(f ast.Expr, prefix model.Prefix, isStar bool) *model.Type {
+func (r *analyzerRepository) parseExpr(f ast.Expr, prefix model.Prefix, isStar bool) *model.Type {
 	switch t := f.(type) {
 	case *ast.Ident:
 		return model.NewType(isStar, prefix, "", t.Name)

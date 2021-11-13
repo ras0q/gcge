@@ -15,8 +15,8 @@ import (
 
 func NewHandlers() *handler.Handlers {
 	generatorRepository := repository.NewGeneratorRepository()
-	parserRepository := repository.NewParserRepository()
-	repositories := repository.NewRepositories(generatorRepository, parserRepository)
+	analyzerRepository := repository.NewAnalyzerRepository()
+	repositories := repository.NewRepositories(generatorRepository, analyzerRepository)
 	handlers := handler.NewHandlers(repositories)
 	return handlers
 }
