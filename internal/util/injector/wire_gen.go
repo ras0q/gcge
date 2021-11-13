@@ -9,24 +9,14 @@ package injector
 import (
 	"github.com/Ras96/gcg/internal/handler"
 	"github.com/Ras96/gcg/internal/repository"
-	"github.com/google/wire"
-	"golang.org/x/tools/imports"
 )
 
 // Injectors from wire.go:
 
-func NewHandlers(opts *imports.Options) handler.Handlers {
-	generatorRepository := repository.NewGeneratorRepository(opts)
+func NewHandlers() *handler.Handlers {
+	generatorRepository := repository.NewGeneratorRepository()
 	parserRepository := repository.NewParserRepository()
 	repositories := repository.NewRepositories(generatorRepository, parserRepository)
 	handlers := handler.NewHandlers(repositories)
 	return handlers
 }
-
-// wire.go:
-
-var (
-	handlerSet = wire.NewSet(handler.NewHandlers)
-
-	repositorySet = wire.NewSet(repository.NewRepositories, repository.NewParserRepository, repository.NewGeneratorRepository)
-)

@@ -16,22 +16,19 @@ import (
 var genTmpl []byte
 
 type generatorRepository struct {
-	Tmpl   *template.Template
-	Opts   *imports.Options
-	Output model.Filename
+	Tmpl *template.Template
+	Opts *imports.Options
 }
 
-func NewGeneratorRepository(opts *imports.Options) GeneratorRepository {
-	return &generatorRepository{
-		Opts: opts,
-	}
+func NewGeneratorRepository() GeneratorRepository {
+	return &generatorRepository{}
 }
 
 var fmap = template.FuncMap{
 	"title": strings.Title,
 }
 
-func (r *generatorRepository) GenerateConstructors(file *model.File) (string, error) {
+func (r *generatorRepository) GenerateConstructors(file *model.File, filename string) (string, error) {
 	r.Tmpl = template.New("constructor").Funcs(fmap)
 	if _, err := r.Tmpl.Parse(string(genTmpl)); err != nil {
 		return "", errors.Wrap(err, "Could not parse templates")
@@ -42,7 +39,7 @@ func (r *generatorRepository) GenerateConstructors(file *model.File) (string, er
 		return "", errors.Wrap(err, "Could not write constructors")
 	}
 
-	out, err := r.format(w)
+	out, err := r.format(w, filename)
 	if err != nil {
 		return "", errors.Wrap(err, "Could not format output")
 	}
@@ -63,8 +60,8 @@ func (r *generatorRepository) writeConstructors(w *bytes.Buffer, file *model.Fil
 	return nil
 }
 
-func (r *generatorRepository) format(w *bytes.Buffer) (string, error) {
-	formatted, err := imports.Process(string(r.Output), w.Bytes(), r.Opts)
+func (r *generatorRepository) format(w *bytes.Buffer, filename string) (string, error) {
+	formatted, err := imports.Process(filename, w.Bytes(), r.Opts)
 	if err != nil {
 		return "", errors.Wrap(err, "Could not format output")
 	}

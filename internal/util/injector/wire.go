@@ -8,25 +8,14 @@ import (
 	"github.com/Ras96/gcg/internal/handler"
 	"github.com/Ras96/gcg/internal/repository"
 	"github.com/google/wire"
-	"golang.org/x/tools/imports"
 )
 
-var (
-	handlerSet = wire.NewSet(
+func NewHandlers() *handler.Handlers {
+	wire.Build(
 		handler.NewHandlers,
-	)
-
-	repositorySet = wire.NewSet(
 		repository.NewRepositories,
 		repository.NewParserRepository,
 		repository.NewGeneratorRepository,
-	)
-)
-
-func NewHandlers(opts *imports.Options) handler.Handlers {
-	wire.Build(
-		handlerSet,
-		repositorySet,
 	)
 
 	return nil

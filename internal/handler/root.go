@@ -4,6 +4,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (h *handlers) Root(cmd *cobra.Command, args []string) {
+type rootHandler struct{}
+
+func (h *rootHandler) Run(cmd *cobra.Command, args []string) {
 	cobra.CheckErr(cmd.Usage())
 }

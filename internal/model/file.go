@@ -41,5 +41,3 @@ type Prefix string
 func (p Prefix) Add(following string) Prefix {
 	return p + Prefix(following)
 }
-
-type Filename string

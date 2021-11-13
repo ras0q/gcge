@@ -1,19 +1,27 @@
 package handler
 
-import (
-	"github.com/Ras96/gcg/internal/repository"
-	"github.com/spf13/cobra"
-)
+import "github.com/Ras96/gcg/internal/repository"
 
-type Handlers interface {
-	Root(cmd *cobra.Command, args []string)
-	Gen(cmd *cobra.Command, args []string)
+type Handlers struct {
+	Gen  genHandler
+	Root rootHandler
+
+	Repo *repository.Repositories
 }
 
-type handlers struct {
-	repo *repository.Repositories
+func NewHandlers(repo *repository.Repositories) *Handlers {
+	return &Handlers{
+		Repo: repo,
+	}
 }
 
-func NewHandlers(r *repository.Repositories) Handlers {
-	return &handlers{r}
+func (h *Handlers) SetupGen(opts *genOpts) {
+	h.Gen = genHandler{
+		repo: h.Repo,
+		opts: opts,
+	}
+}
+
+func (h *Handlers) SetupRoot() {
+	h.Root = rootHandler{}
 }
