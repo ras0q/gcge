@@ -1,3 +1,4 @@
+//go:generate go run github.com/Ras96/gcg@latest gen $GOFILE -o constructor_gen.go
 package model
 
 type File struct {

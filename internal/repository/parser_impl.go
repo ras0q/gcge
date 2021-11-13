@@ -96,7 +96,7 @@ func (r *parserRepository) parseFields(f []*ast.Field) []model.Field {
 			ftype = *r.parseExpr(fld.Type, "", false)
 		}
 
-		fields[i] = *model.NewField(fname, &ftype)
+		fields[i] = *model.NewField(*fname, ftype)
 	}
 
 	return fields
