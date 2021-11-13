@@ -14,7 +14,7 @@ type Import struct {
 type Struct struct {
 	Name      string
 	Fields    []Field
-	IsPrivate bool // TODO
+	IsPrivate bool
 }
 
 type Field struct {
