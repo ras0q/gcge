@@ -12,34 +12,6 @@ import (
 
 const MAXCAP = 1000
 
-var identifiers = map[string]string{
-	"break":       "",
-	"case":        "",
-	"chan":        "",
-	"const":       "",
-	"continue":    "",
-	"default":     "",
-	"defer":       "",
-	"else":        "",
-	"fallthrough": "",
-	"for":         "",
-	"func":        "",
-	"go":          "",
-	"goto":        "",
-	"if":          "",
-	"import":      "",
-	"interface":   "",
-	"map":         "",
-	"package":     "",
-	"range":       "",
-	"return":      "",
-	"select":      "",
-	"struct":      "",
-	"switch":      "",
-	"type":        "",
-	"var":         "",
-}
-
 type parserRepository struct{}
 
 func NewParserRepository() ParserRepository {
@@ -65,6 +37,22 @@ func (r *parserRepository) parsePkgName(name *ast.Ident) string {
 	return name.Name
 }
 
+func (r *parserRepository) parseImportSpecs(is []*ast.ImportSpec) []model.Import {
+	imports := make([]model.Import, len(is))
+
+	for i, imp := range is {
+		if imp.Name != nil {
+			imports[i].Name = imp.Name.Name
+		}
+
+		if imp.Path != nil {
+			imports[i].Path = imp.Path.Value
+		}
+	}
+
+	return imports
+}
+
 func (r *parserRepository) parseObjectsToStructs(obj map[string]*ast.Object) []model.Struct {
 	structs := make([]model.Struct, 0, MAXCAP)
 
@@ -85,22 +73,6 @@ func (r *parserRepository) parseObjectsToStructs(obj map[string]*ast.Object) []m
 	}
 
 	return structs
-}
-
-func (r *parserRepository) parseImportSpecs(is []*ast.ImportSpec) []model.Import {
-	imports := make([]model.Import, len(is))
-
-	for i, imp := range is {
-		if imp.Name != nil {
-			imports[i].Name = imp.Name.Name
-		}
-
-		if imp.Path != nil {
-			imports[i].Path = imp.Path.Value
-		}
-	}
-
-	return imports
 }
 
 func (r *parserRepository) parseFields(f []*ast.Field) []model.Field {
@@ -142,9 +114,37 @@ func (r *parserRepository) parseExpr(f ast.Expr, prefix model.Prefix, isStar boo
 	}
 }
 
+var goIdentifiers = map[string]struct{}{
+	"break":       {},
+	"case":        {},
+	"chan":        {},
+	"const":       {},
+	"continue":    {},
+	"default":     {},
+	"defer":       {},
+	"else":        {},
+	"fallthrough": {},
+	"for":         {},
+	"func":        {},
+	"go":          {},
+	"goto":        {},
+	"if":          {},
+	"import":      {},
+	"interface":   {},
+	"map":         {},
+	"package":     {},
+	"range":       {},
+	"return":      {},
+	"select":      {},
+	"struct":      {},
+	"switch":      {},
+	"type":        {},
+	"var":         {},
+}
+
 func toArgName(s string) string {
 	l := strings.ToLower(s)
-	if _, ok := identifiers[l]; ok {
+	if _, ok := goIdentifiers[l]; ok {
 		return l + "_"
 	}
 
