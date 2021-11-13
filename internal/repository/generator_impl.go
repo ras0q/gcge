@@ -21,7 +21,13 @@ type generatorRepository struct {
 }
 
 func NewGeneratorRepository() GeneratorRepository {
-	return &generatorRepository{}
+	return &generatorRepository{
+		Tmpl: nil,
+		Opts: &imports.Options{
+			AllErrors: true,
+			Comments:  true,
+		},
+	}
 }
 
 var fmap = template.FuncMap{
