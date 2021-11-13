@@ -99,12 +99,14 @@ func (r *analyzerRepository) parseExpr(f ast.Expr, prefix model.Prefix, isStar b
 		return model.NewType(isStar, prefix, "", t.Name)
 	case *ast.SelectorExpr:
 		return model.NewType(isStar, prefix, t.X.(*ast.Ident).Name, t.Sel.Name)
+	case *ast.InterfaceType:
+		return model.NewType(isStar, prefix, "", "interface{}")
 	case *ast.ArrayType:
 		return r.parseExpr(t.Elt, prefix.Add("[]"), isStar)
 	case *ast.StarExpr:
 		return r.parseExpr(t.X, prefix.Add("*"), isStar)
 	default:
-		return nil
+		return model.NewType(isStar, prefix, "", "interface{}")
 	}
 }
 

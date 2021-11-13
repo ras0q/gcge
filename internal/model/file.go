@@ -1,4 +1,5 @@
 //go:generate go run github.com/Ras96/gcg@main gen $GOFILE -o file_cst.go
+
 package model
 
 type File struct {

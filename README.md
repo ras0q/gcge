@@ -2,6 +2,9 @@
 
 Go Constructor Generator
 
+"gcg" generates constructors of structs automatically.
+Check [example](./example) directory for more information.
+
 ## Install
 
 ```sh
@@ -10,7 +13,7 @@ $ go install github.com/Ras96/gcg@latest
 
 ## Usage
 
-```sh
+```txt
 $ gcg
 Usage:
   gcg [flags]
