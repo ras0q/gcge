@@ -4,6 +4,10 @@ import (
 	"bufio"
 	"bytes"
 	_ "embed"
+	"fmt"
+	"io/fs"
+	"io/ioutil"
+	"os"
 	"strings"
 	"text/template"
 
@@ -28,20 +32,20 @@ var fmap = template.FuncMap{
 	"title": strings.Title,
 }
 
-func (r *generatorRepository) GenerateConstructors(file *model.File, filename string) (string, error) {
+func (r *generatorRepository) GenerateConstructors(file *model.File, filename string) ([]byte, error) {
 	r.Tmpl = template.New("constructor").Funcs(fmap)
 	if _, err := r.Tmpl.Parse(string(genTmpl)); err != nil {
-		return "", errors.Wrap(err, "Could not parse templates")
+		return nil, errors.Wrap(err, "Could not parse templates")
 	}
 
 	w := &bytes.Buffer{}
 	if err := r.writeConstructors(w, file); err != nil {
-		return "", errors.Wrap(err, "Could not write constructors")
+		return nil, errors.Wrap(err, "Could not write constructors")
 	}
 
 	out, err := r.format(w, filename)
 	if err != nil {
-		return "", errors.Wrap(err, "Could not format output")
+		return nil, errors.Wrap(err, "Could not format output")
 	}
 
 	return out, nil
@@ -60,11 +64,20 @@ func (r *generatorRepository) writeConstructors(w *bytes.Buffer, file *model.Fil
 	return nil
 }
 
-func (r *generatorRepository) format(w *bytes.Buffer, filename string) (string, error) {
+func (r *generatorRepository) format(w *bytes.Buffer, filename string) ([]byte, error) {
 	formatted, err := imports.Process(filename, w.Bytes(), r.Opts)
 	if err != nil {
-		return "", errors.Wrap(err, "Could not format output")
+		if len(filename) == 0 {
+			fmt.Fprintln(os.Stdout, string(w.Bytes()))
+		} else {
+			ioutil.WriteFile(filename, w.Bytes(), fs.ModePerm)
+		}
+
+		fmt.Fprintln(os.Stdout, "Error occurred. Instead, gcg output the unformatted file")
+		fmt.Fprintln(os.Stdout, "")
+
+		return nil, errors.Wrap(err, "Could not format file")
 	}
 
-	return string(formatted), nil
+	return formatted, nil
 }

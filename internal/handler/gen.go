@@ -2,6 +2,8 @@ package handler
 
 import (
 	"fmt"
+	"io/fs"
+	"io/ioutil"
 	"os"
 
 	"github.com/Ras96/gcg/internal/repository"
@@ -35,5 +37,9 @@ func (h *genHandler) Run(cmd *cobra.Command, args []string) {
 	res, err := h.repo.Generator.GenerateConstructors(file, *h.opts.output)
 	errors.CheckErr(err, "Could not generate constructors")
 
-	fmt.Fprintln(os.Stdout, res)
+	if len(*h.opts.output) == 0 {
+		fmt.Fprintln(os.Stdout, string(res))
+	} else {
+		ioutil.WriteFile(*h.opts.output, res, fs.ModePerm)
+	}
 }
