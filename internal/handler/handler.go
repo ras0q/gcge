@@ -3,8 +3,7 @@ package handler
 import "github.com/Ras96/gcg/internal/repository"
 
 type Handlers struct {
-	Gen  genHandler
-	Root rootHandler
+	Gen genHandler
 
 	Repo *repository.Repositories
 }
@@ -22,8 +21,4 @@ func (h *Handlers) SetupGen(output *string) {
 			output: output,
 		},
 	}
-}
-
-func (h *Handlers) SetupRoot() {
-	h.Root = rootHandler{}
 }

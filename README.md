@@ -2,6 +2,12 @@
 
 Go Constructor Generator
 
+## Install
+
+```sh
+$ go install github.com/Ras96/gcg@latest
+```
+
 ## Usage
 
 ```sh

@@ -37,7 +37,9 @@ var h = injector.NewHandlers()
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use: "gcg",
-	Run: h.Root.Run,
+	Run: func(cmd *cobra.Command, args []string) {
+		cobra.CheckErr(cmd.Usage())
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -58,8 +60,6 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
-	h.SetupRoot()
 }
 
 // initConfig reads in config file and ENV variables if set.
