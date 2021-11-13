@@ -4,6 +4,7 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"sort"
 	"strings"
 
 	"github.com/Ras96/gcg/internal/model"
@@ -54,22 +55,12 @@ func (r *parserRepository) parseImportSpecs(is []*ast.ImportSpec) []model.Import
 }
 
 func (r *parserRepository) parseObjectsToStructs(obj map[string]*ast.Object) []model.Struct {
-	structs := make([]model.Struct, 0, MAXCAP)
+	sa := convertSortedArr(obj)
+	structs := make([]model.Struct, len(sa))
 
-	for name, obj := range obj {
-		ts, ok := obj.Decl.(*ast.TypeSpec)
-		if !ok {
-			continue
-		}
-
-		st, ok := ts.Type.(*ast.StructType)
-		if !ok {
-			continue
-		}
-
-		flds := r.parseFields(st.Fields.List)
-
-		structs = append(structs, *model.NewStruct(name, flds, isPrivate(name)))
+	for i, v := range sa {
+		flds := r.parseFields(v.fields)
+		structs[i] = *model.NewStruct(v.name, flds, isPrivate(v.name))
 	}
 
 	return structs
@@ -160,4 +151,34 @@ func toArgName(s string) string {
 
 func isPrivate(s string) bool {
 	return s[:1] == strings.ToLower(s[:1])
+}
+
+type structInfo struct {
+	pos    token.Pos
+	name   string
+	fields []*ast.Field
+}
+
+func convertSortedArr(obj map[string]*ast.Object) []structInfo {
+	arr := make([]structInfo, 0, MAXCAP)
+
+	for name, v := range obj {
+		ts, ok := v.Decl.(*ast.TypeSpec)
+		if !ok {
+			continue
+		}
+
+		st, ok := ts.Type.(*ast.StructType)
+		if !ok {
+			continue
+		}
+
+		arr = append(arr, structInfo{v.Pos(), name, st.Fields.List})
+	}
+
+	sort.Slice(arr, func(i int, j int) bool {
+		return arr[i].pos < arr[j].pos
+	})
+
+	return arr
 }
