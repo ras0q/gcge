@@ -73,8 +73,8 @@ func (r *generatorRepository) format(w *bytes.Buffer, filename string) ([]byte, 
 			ioutil.WriteFile(filename, w.Bytes(), fs.ModePerm)
 		}
 
-		fmt.Fprintln(os.Stdout, "Error occurred. Instead, gcg output the unformatted file")
-		fmt.Fprintln(os.Stdout, "")
+		fmt.Fprintln(os.Stderr, "Error occurred. Instead, gcg output the unformatted file")
+		fmt.Fprintln(os.Stderr, "")
 
 		return nil, errors.Wrap(err, "Could not format file")
 	}

@@ -79,11 +79,14 @@ func (r *parserRepository) parseFields(f []*ast.Field) []model.Field {
 	fields := make([]model.Field, len(f))
 
 	for i, fld := range f {
+		var org string
+
 		if len(fld.Names) == 0 {
-			continue
+			org = fld.Type.(*ast.Ident).Name
+		} else {
+			org = fld.Names[0].Name
 		}
 
-		org := fld.Names[0].Name
 		fname := model.NewName(org, toArgName(org))
 
 		ftype := model.Type{}
@@ -143,7 +146,11 @@ var goIdentifiers = map[string]struct{}{
 }
 
 func toArgName(s string) string {
-	l := strings.ToLower(s)
+	var l string
+	if !isPrivate(s) {
+		l = strings.ToLower(s[:1]) + s[1:]
+	}
+
 	if _, ok := goIdentifiers[l]; ok {
 		return l + "_"
 	}

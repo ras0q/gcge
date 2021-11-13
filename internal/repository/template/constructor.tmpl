@@ -1,5 +1,7 @@
 {{define "new"}}{{if .IsPrivate}}new{{else}}New{{end}}{{end -}}
-{{define "args"}}{{range .}}{{.Name.Argument}} {{.Type.Prefix}}{{.Type.Package}}{{.Type.Name}}, {{end}}{{end -}}
+{{define "args"}}{{range .}}{{.Name.Argument}} {{template "star" .}}{{.Type.Prefix}}{{template "ex-pkg" .}}{{.Type.Name}}, {{end}}{{end -}}
+{{define "star"}}{{if .Type.IsStar}}*{{end}}{{end}}
+{{define "ex-pkg"}}{{if .Type.Package}}{{.Type.Package}}.{{end}}{{end}}
 
 {{define "function" -}}
 {{$f := . -}}
