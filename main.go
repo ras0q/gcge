@@ -23,13 +23,6 @@ package main
 
 import "github.com/Ras96/gcg/cmd"
 
-var (
-	module  = "github.com/Ras96/gcg"
-	version = "main"
-)
-
 func main() {
-	cmd.Module = module
-	cmd.Version = version
 	cmd.Execute()
 }
