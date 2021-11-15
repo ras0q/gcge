@@ -22,6 +22,7 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"github.com/Ras96/gcg/internal/handler"
 	"github.com/spf13/cobra"
 )
 
@@ -29,13 +30,14 @@ import (
 var genCmd = &cobra.Command{
 	Use:   "gen",
 	Short: "Command \"gen\" generates constructors",
-	Run:   h.Gen.Run,
 }
 
 func init() {
 	rootCmd.AddCommand(genCmd)
 
-	h.SetupGen(
-		genCmd.Flags().StringP("output", "o", "", "Output filename"),
-	)
+	opts := handler.GenOpts{}
+	genCmd.Flags().StringVarP(&opts.Output, "output", "o", "", "Output file")
+
+	h := handler.NewGenHandler(repo, &opts)
+	genCmd.RunE = h.Run
 }

@@ -13,27 +13,40 @@ import (
 
 type genHandler struct {
 	repo *repository.Repositories
-	opts *genOpts
+	opts *GenOpts
 }
 
-type genOpts struct {
-	output *string
+type GenOpts struct {
+	Output string
 }
 
-func (h *genHandler) Run(cmd *cobra.Command, args []string) {
+func NewGenHandler(repo *repository.Repositories, opts *GenOpts) *genHandler {
+	return &genHandler{
+		repo: repo,
+		opts: opts,
+	}
+}
+
+func (h *genHandler) Run(cmd *cobra.Command, args []string) error {
 	if len(args) != 1 {
-		cobra.CheckErr(errors.New("Please provide an argument"))
+		return errors.New("Please provide an argument")
 	}
 
 	file, err := h.repo.Analyzer.AnalyzeFile(args[0])
-	errors.CheckErr(err, "Could not analyze file")
+	if err != nil {
+		return errors.Wrap(err, "Could not analyze file")
+	}
 
-	res, err := h.repo.Generator.GenerateConstructors(file, *h.opts.output)
-	errors.CheckErr(err, "Could not generate constructors")
+	res, err := h.repo.Generator.GenerateConstructors(file, h.opts.Output)
+	if err != nil {
+		return errors.Wrap(err, "Could not generate constructors")
+	}
 
-	if len(*h.opts.output) == 0 {
+	if len(h.opts.Output) == 0 {
 		fmt.Fprintln(os.Stdout, string(res))
 	} else {
-		_ = ioutil.WriteFile(*h.opts.output, res, fs.ModePerm)
+		_ = ioutil.WriteFile(h.opts.Output, res, fs.ModePerm)
 	}
+
+	return nil
 }
