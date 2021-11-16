@@ -25,24 +25,21 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Ras96/gcg/internal/util/injector"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var (
 	cfgFile string
-	version string = "main"
+	version = "main"
 )
-
-var h = injector.NewHandlers()
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:     "gcg",
 	Version: version,
-	Run: func(cmd *cobra.Command, args []string) {
-		cobra.CheckErr(cmd.Usage())
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmd.Usage() //nolint:wrapcheck
 	},
 }
 

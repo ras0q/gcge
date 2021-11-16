@@ -22,20 +22,34 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"github.com/Ras96/gcg/internal/util/errors"
+	"github.com/Ras96/gcg/internal/util/injector"
 	"github.com/spf13/cobra"
 )
+
+var output string
 
 // genCmd represents the gen command
 var genCmd = &cobra.Command{
 	Use:   "gen",
 	Short: "Command \"gen\" generates constructors",
-	Run:   h.Gen.Run,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) != 1 {
+			return errors.New("Please provide an argument")
+		}
+
+		h := injector.NewHandlers()
+
+		if err := h.ExecuteGen(args[0], output); err != nil {
+			return errors.Wrap(err, "Could not generate constructors")
+		}
+
+		return nil
+	},
 }
 
 func init() {
 	rootCmd.AddCommand(genCmd)
 
-	h.SetupGen(
-		genCmd.Flags().StringP("output", "o", "", "Output filename"),
-	)
+	genCmd.Flags().StringVarP(&output, "output", "o", "", "Output file")
 }

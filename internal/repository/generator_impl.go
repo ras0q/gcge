@@ -72,7 +72,9 @@ func (r *generatorRepository) format(w *bytes.Buffer, filename string) ([]byte, 
 		if len(filename) == 0 {
 			fmt.Fprintln(os.Stdout, w.String())
 		} else {
-			_ = ioutil.WriteFile(filename, w.Bytes(), fs.ModePerm)
+			if err := ioutil.WriteFile(filename, w.Bytes(), fs.ModePerm); err != nil {
+				return nil, errors.Wrap(err, "Could not write to file")
+			}
 		}
 
 		fmt.Fprintln(os.Stderr, "Error occurred. Instead, gcg output the unformatted file")
