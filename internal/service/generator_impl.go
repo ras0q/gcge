@@ -11,7 +11,7 @@ import (
 	"text/template"
 
 	"github.com/Ras96/gcg/internal/model"
-	"github.com/Ras96/gcg/internal/util/errors"
+	"github.com/pkg/errors"
 	"golang.org/x/tools/imports"
 )
 

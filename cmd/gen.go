@@ -22,8 +22,8 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"github.com/Ras96/gcg/internal/util/errors"
 	"github.com/Ras96/gcg/internal/util/injector"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 

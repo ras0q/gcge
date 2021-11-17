@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/Ras96/gcg/internal/util/errors"
+	"github.com/pkg/errors"
 )
 
 func (h *Handlers) ExecuteGen(in string, out string) error {
