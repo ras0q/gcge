@@ -1,7 +1,7 @@
-package repository
+package service
 
 import "github.com/Ras96/gcg/internal/model"
 
-type GeneratorRepository interface {
+type GeneratorService interface {
 	GenerateConstructors(file *model.File, filename string) ([]byte, error)
 }

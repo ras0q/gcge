@@ -1,9 +1,9 @@
-package repository
+package service
 
 import (
 	"github.com/Ras96/gcg/internal/model"
 )
 
-type AnalyzerRepository interface {
+type AnalyzerService interface {
 	AnalyzeFile(filename string) (*model.File, error)
 }

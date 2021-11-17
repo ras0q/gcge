@@ -1,13 +1,13 @@
 package handler
 
-import "github.com/Ras96/gcg/internal/repository"
+import "github.com/Ras96/gcg/internal/service"
 
 type Handlers struct {
-	Repo *repository.Repositories
+	Srv *service.Services
 }
 
-func NewHandlers(repo *repository.Repositories) *Handlers {
+func NewHandlers(srv *service.Services) *Handlers {
 	return &Handlers{
-		Repo: repo,
+		Srv: srv,
 	}
 }

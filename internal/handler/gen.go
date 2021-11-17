@@ -10,12 +10,12 @@ import (
 )
 
 func (h *Handlers) ExecuteGen(in string, out string) error {
-	file, err := h.Repo.Analyzer.AnalyzeFile(in)
+	file, err := h.Srv.Analyzer.AnalyzeFile(in)
 	if err != nil {
 		return errors.Wrap(err, "Could not analyze file")
 	}
 
-	res, err := h.Repo.Generator.GenerateConstructors(file, out)
+	res, err := h.Srv.Generator.GenerateConstructors(file, out)
 	if err != nil {
 		return errors.Wrap(err, "Could not generate constructors")
 	}

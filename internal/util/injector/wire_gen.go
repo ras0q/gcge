@@ -8,15 +8,15 @@ package injector
 
 import (
 	"github.com/Ras96/gcg/internal/handler"
-	"github.com/Ras96/gcg/internal/repository"
+	"github.com/Ras96/gcg/internal/service"
 )
 
 // Injectors from wire.go:
 
 func NewHandlers() *handler.Handlers {
-	generatorRepository := repository.NewGeneratorRepository()
-	analyzerRepository := repository.NewAnalyzerRepository()
-	repositories := repository.NewRepositories(generatorRepository, analyzerRepository)
-	handlers := handler.NewHandlers(repositories)
+	generatorService := service.NewGeneratorService()
+	analyzerService := service.NewAnalyzerService()
+	services := service.NewServices(generatorService, analyzerService)
+	handlers := handler.NewHandlers(services)
 	return handlers
 }

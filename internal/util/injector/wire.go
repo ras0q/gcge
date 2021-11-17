@@ -6,16 +6,16 @@ package injector
 
 import (
 	"github.com/Ras96/gcg/internal/handler"
-	"github.com/Ras96/gcg/internal/repository"
+	"github.com/Ras96/gcg/internal/service"
 	"github.com/google/wire"
 )
 
 func NewHandlers() *handler.Handlers {
 	wire.Build(
 		handler.NewHandlers,
-		repository.NewRepositories,
-		repository.NewAnalyzerRepository,
-		repository.NewGeneratorRepository,
+		service.NewServices,
+		service.NewAnalyzerService,
+		service.NewGeneratorService,
 	)
 
 	return nil
