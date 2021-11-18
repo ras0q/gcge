@@ -36,7 +36,7 @@ var fmap = template.FuncMap{
 
 func (r *generatorService) GenerateConstructors(file *model.File, filename string) ([]byte, error) {
 	r.Tmpl = template.New("constructor").Funcs(fmap)
-	if _, err := r.Tmpl.Parse(string(model.GenTmpl)); err != nil {
+	if _, err := r.Tmpl.Parse(model.GenTmpl); err != nil {
 		return nil, errors.Wrap(err, "Could not parse templates")
 	}
 
