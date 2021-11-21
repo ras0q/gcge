@@ -32,14 +32,10 @@ var output string
 // genCmd represents the gen command
 var genCmd = &cobra.Command{
 	Use:   "gen",
-	Short: "Command \"gen\" generates constructors",
+	Short: "Generate constructors",
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) != 1 {
-			return errors.New("Please provide an argument")
-		}
-
 		h := injector.NewHandlers()
-
 		if err := h.ExecuteGen(args[0], output); err != nil {
 			return errors.Wrap(err, "Could not generate constructors")
 		}
