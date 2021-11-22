@@ -22,12 +22,13 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"github.com/Ras96/gcg/internal/handler"
 	"github.com/Ras96/gcg/internal/util/injector"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
-var output string
+var genOpts handler.GenOpts
 
 // genCmd represents the gen command
 var genCmd = &cobra.Command{
@@ -36,7 +37,7 @@ var genCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		h := injector.NewHandlers()
-		if err := h.ExecuteGen(args[0], output); err != nil {
+		if err := h.ExecuteGen(args[0], genOpts); err != nil {
 			return errors.Wrap(err, "Could not generate constructors")
 		}
 
@@ -47,5 +48,6 @@ var genCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(genCmd)
 
-	genCmd.Flags().StringVarP(&output, "output", "o", "", "Output file")
+	genCmd.Flags().StringVarP(&genOpts.Output, "output", "o", "", "Output file")
+	genCmd.Flags().BoolVarP(&genOpts.IsPrivate, "private", "p", false, "Generate private constructors")
 }

@@ -31,3 +31,19 @@ Flags:
 
 Use "gcg [command] --help" for more information about a command.
 ```
+
+```txt
+$ gcg gen -h
+Generate constructors
+
+Usage:
+  gcg gen [flags]
+
+Flags:
+  -h, --help            help for gen
+  -o, --output string   Output file
+  -p, --private         Generate private constructors
+
+Global Flags:
+      --config string   config file (default is $HOME/.gcg.yml)
+```

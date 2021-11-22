@@ -34,18 +34,18 @@ var fmap = template.FuncMap{
 	"title": strings.Title,
 }
 
-func (r *generatorService) GenerateConstructors(file *model.File, filename string) ([]byte, error) {
+func (r *generatorService) GenerateConstructors(file *model.File, output string, isPrivate bool) ([]byte, error) {
 	r.Tmpl = template.New("constructor").Funcs(fmap)
 	if _, err := r.Tmpl.Parse(model.GenTmpl); err != nil {
 		return nil, errors.Wrap(err, "Could not parse templates")
 	}
 
 	w := &bytes.Buffer{}
-	if err := r.writeConstructors(w, file); err != nil {
+	if err := r.writeConstructors(w, file, isPrivate); err != nil {
 		return nil, errors.Wrap(err, "Could not write constructors")
 	}
 
-	out, err := r.format(w, filename)
+	out, err := r.format(w, output)
 	if err != nil {
 		return nil, errors.Wrap(err, "Could not format output")
 	}
@@ -53,9 +53,15 @@ func (r *generatorService) GenerateConstructors(file *model.File, filename strin
 	return out, nil
 }
 
-func (r *generatorService) writeConstructors(w *bytes.Buffer, file *model.File) error {
+func (r *generatorService) writeConstructors(w *bytes.Buffer, file *model.File, isPrivate bool) error {
 	b := bufio.NewWriter(w)
-	if err := r.Tmpl.Execute(b, file); err != nil {
+	if err := r.Tmpl.Execute(b, struct {
+		File      *model.File
+		IsPrivate bool
+	}{
+		File:      file,
+		IsPrivate: isPrivate,
+	}); err != nil {
 		return errors.Wrap(err, "Could not execute template")
 	}
 
