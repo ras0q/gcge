@@ -28,20 +28,18 @@ import (
 )
 
 var (
-	path     = "github.com/Ras96/gcg"
 	version  = ""
 	revision = ""
 )
 
 func main() {
-	cmd.Path = path
-	cmd.Revision = revision
-
 	if len(version) > 0 {
 		cmd.Version = version
 	} else if info, ok := debug.ReadBuildInfo(); ok {
 		cmd.Version = info.Main.Version
 	}
+
+	cmd.Revision = revision
 
 	cmd.Execute()
 }

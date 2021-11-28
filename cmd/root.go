@@ -32,7 +32,6 @@ import (
 var (
 	cfgFile string
 
-	Path     string
 	Version  string
 	Revision string
 )
