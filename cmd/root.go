@@ -30,7 +30,9 @@ import (
 )
 
 var (
-	cfgFile  string
+	cfgFile string
+
+	Path     string
 	Version  string
 	Revision string
 )

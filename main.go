@@ -21,16 +21,27 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/Ras96/gcg/cmd"
+import (
+	"runtime/debug"
+
+	"github.com/Ras96/gcg/cmd"
+)
 
 var (
-	version  = "UNSET"
-	revision = "UNSET"
+	path     = "github.com/Ras96/gcg"
+	version  = ""
+	revision = ""
 )
 
 func main() {
-	cmd.Version = version
+	cmd.Path = path
 	cmd.Revision = revision
+
+	if len(version) > 0 {
+		cmd.Version = version
+	} else if info, ok := debug.ReadBuildInfo(); ok {
+		cmd.Version = info.Main.Version
+	}
 
 	cmd.Execute()
 }
