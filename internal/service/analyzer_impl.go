@@ -19,7 +19,7 @@ func NewAnalyzerService() AnalyzerService {
 	return &analyzerService{}
 }
 
-func (r *analyzerService) AnalyzeFile(filename string) (*model.File, error) {
+func (s *analyzerService) AnalyzeFile(filename string) (*model.File, error) {
 	fset := token.NewFileSet()
 
 	f, err := parser.ParseFile(fset, filename, nil, 0)
@@ -27,18 +27,18 @@ func (r *analyzerService) AnalyzeFile(filename string) (*model.File, error) {
 		return nil, errors.Wrap(err, "Could not parse file")
 	}
 
-	packageName := r.parsePkgName(f.Name)
-	imports := r.parseImportSpecs(f.Imports)
-	structs := r.parseObjectsToStructs(f.Scope.Objects)
+	packageName := s.parsePkgName(f.Name)
+	imports := s.parseImportSpecs(f.Imports)
+	structs := s.parseObjectsToStructs(f.Scope.Objects)
 
 	return model.NewFile(packageName, imports, structs), nil
 }
 
-func (r *analyzerService) parsePkgName(name *ast.Ident) string {
+func (s *analyzerService) parsePkgName(name *ast.Ident) string {
 	return name.Name
 }
 
-func (r *analyzerService) parseImportSpecs(is []*ast.ImportSpec) []model.Import {
+func (s *analyzerService) parseImportSpecs(is []*ast.ImportSpec) []model.Import {
 	imports := make([]model.Import, len(is))
 
 	for i, imp := range is {
@@ -54,19 +54,19 @@ func (r *analyzerService) parseImportSpecs(is []*ast.ImportSpec) []model.Import 
 	return imports
 }
 
-func (r *analyzerService) parseObjectsToStructs(obj map[string]*ast.Object) []model.Struct {
+func (s *analyzerService) parseObjectsToStructs(obj map[string]*ast.Object) []model.Struct {
 	sa := convertSortedArr(obj)
 	structs := make([]model.Struct, len(sa))
 
 	for i, v := range sa {
-		flds := r.parseFields(v.fields)
+		flds := s.parseFields(v.fields)
 		structs[i] = *model.NewStruct(v.name, flds, isPrivate(v.name))
 	}
 
 	return structs
 }
 
-func (r *analyzerService) parseFields(f []*ast.Field) []model.Field {
+func (s *analyzerService) parseFields(f []*ast.Field) []model.Field {
 	fields := make([]model.Field, len(f))
 
 	for i, fld := range f {
@@ -82,9 +82,9 @@ func (r *analyzerService) parseFields(f []*ast.Field) []model.Field {
 
 		var ftype model.Type
 		if starExpr, ok := fld.Type.(*ast.StarExpr); ok {
-			ftype = *r.parseExpr(starExpr.X, "", true)
+			ftype = *s.parseExpr(starExpr.X, "", true)
 		} else {
-			ftype = *r.parseExpr(fld.Type, "", false)
+			ftype = *s.parseExpr(fld.Type, "", false)
 		}
 
 		fields[i] = *model.NewField(*fname, ftype)
@@ -93,7 +93,7 @@ func (r *analyzerService) parseFields(f []*ast.Field) []model.Field {
 	return fields
 }
 
-func (r *analyzerService) parseExpr(f ast.Expr, prefix model.Prefix, isStar bool) *model.Type {
+func (s *analyzerService) parseExpr(f ast.Expr, prefix model.Prefix, isStar bool) *model.Type {
 	switch t := f.(type) {
 	case *ast.Ident:
 		return model.NewType(isStar, prefix, "", t.Name)
@@ -102,9 +102,9 @@ func (r *analyzerService) parseExpr(f ast.Expr, prefix model.Prefix, isStar bool
 	case *ast.InterfaceType:
 		return model.NewType(isStar, prefix, "", "interface{}")
 	case *ast.ArrayType:
-		return r.parseExpr(t.Elt, prefix.Add("[]"), isStar)
+		return s.parseExpr(t.Elt, prefix.Add("[]"), isStar)
 	case *ast.StarExpr:
-		return r.parseExpr(t.X, prefix.Add("*"), isStar)
+		return s.parseExpr(t.X, prefix.Add("*"), isStar)
 	default:
 		return model.NewType(isStar, prefix, "", "interface{}")
 	}

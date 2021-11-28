@@ -34,8 +34,8 @@ var fmap = template.FuncMap{
 	"title": strings.Title,
 }
 
-func (r *generatorService) GenerateConstructors(file *model.File, output string, isPrivate bool) ([]byte, error) {
-	r.Tmpl = template.New("constructor").Funcs(
+func (s *generatorService) GenerateConstructors(file *model.File, output string, isPrivate bool) ([]byte, error) {
+	s.Tmpl = template.New("constructor").Funcs(
 		template.FuncMap{
 			"title": strings.Title,
 			"funcName": func(funcName string) string {
@@ -47,16 +47,16 @@ func (r *generatorService) GenerateConstructors(file *model.File, output string,
 			},
 		},
 	)
-	if _, err := r.Tmpl.Parse(model.GenTmpl); err != nil {
+	if _, err := s.Tmpl.Parse(model.GenTmpl); err != nil {
 		return nil, errors.Wrap(err, "Could not parse templates")
 	}
 
 	w := &bytes.Buffer{}
-	if err := r.writeConstructors(w, file); err != nil {
+	if err := s.writeConstructors(w, file); err != nil {
 		return nil, errors.Wrap(err, "Could not write constructors")
 	}
 
-	out, err := r.format(w, output)
+	out, err := s.format(w, output)
 	if err != nil {
 		return nil, errors.Wrap(err, "Could not format output")
 	}
@@ -64,9 +64,9 @@ func (r *generatorService) GenerateConstructors(file *model.File, output string,
 	return out, nil
 }
 
-func (r *generatorService) writeConstructors(w *bytes.Buffer, file *model.File) error {
+func (s *generatorService) writeConstructors(w *bytes.Buffer, file *model.File) error {
 	b := bufio.NewWriter(w)
-	if err := r.Tmpl.Execute(b, file); err != nil {
+	if err := s.Tmpl.Execute(b, file); err != nil {
 		return errors.Wrap(err, "Could not execute template")
 	}
 
@@ -77,8 +77,8 @@ func (r *generatorService) writeConstructors(w *bytes.Buffer, file *model.File) 
 	return nil
 }
 
-func (r *generatorService) format(w *bytes.Buffer, filename string) ([]byte, error) {
-	formatted, err := imports.Process(filename, w.Bytes(), r.Opts)
+func (s *generatorService) format(w *bytes.Buffer, filename string) ([]byte, error) {
+	formatted, err := imports.Process(filename, w.Bytes(), s.Opts)
 	if err != nil {
 		if len(filename) == 0 {
 			fmt.Fprintln(os.Stdout, w.String())
