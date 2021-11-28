@@ -30,14 +30,14 @@ import (
 )
 
 var (
-	cfgFile string
-	version = "main"
+	cfgFile  string
+	Version  string
+	Revision string
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:     "gcg",
-	Version: version,
+	Use: "gcg",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return cmd.Usage() //nolint:wrapcheck
 	},
@@ -46,6 +46,7 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	rootCmd.SetVersionTemplate(fmt.Sprintf("gcg version %s %s", Version, Revision))
 	cobra.CheckErr(rootCmd.Execute())
 }
 

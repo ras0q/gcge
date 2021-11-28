@@ -23,6 +23,14 @@ package main
 
 import "github.com/Ras96/gcg/cmd"
 
+var (
+	version  = "UNSET"
+	revision = "UNSET"
+)
+
 func main() {
+	cmd.Version = version
+	cmd.Revision = revision
+
 	cmd.Execute()
 }
