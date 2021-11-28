@@ -16,5 +16,5 @@ add-cmd:
 	@read -p "Command Name > " CMD_NAME && \
 	go run github.com/spf13/cobra/cobra@latest add $$CMD_NAME --config ./.cobra.yml
 
-gen:
+go-gen:
 	@go generate ./...

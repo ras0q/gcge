@@ -1,6 +1,6 @@
-//go:generate go run github.com/Ras96/gcg@main gen $GOFILE -o gcg_gen.go
+//go:generate go run github.com/Ras96/gcg@latest gen $GOFILE -o gcg_gen.go
 
-package example
+package example_test
 
 type Hoge struct {
 	A int
