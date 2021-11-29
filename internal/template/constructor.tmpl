@@ -1,0 +1,10 @@
+{{define "constructor"}}
+  func {{funcName "new"}}{{title .Name}} ({{template "args" .Fields}}) *{{.Name}} {
+    st := {{funcName "make"}}{{title .Name}}({{- range $v := .Fields}}{{$v.Name.Argument}},{{end}})
+    return &st
+  }
+
+  func {{funcName "make"}}{{title .Name}} ({{template "args" .Fields}}) {{.Name}} {
+    return {{template "return-value" .}}
+  }
+{{end}}

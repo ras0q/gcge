@@ -1,0 +1,13 @@
+{{define "args"}}{{range .}}{{.Name.Argument}} {{template "star" .}}{{.Type.Prefix}}{{template "ex-pkg" .}}{{.Type.Name}},{{end}}{{end}}
+
+{{define "star"}}{{if .Type.IsStar}}*{{end}}{{end}}
+
+{{define "ex-pkg"}}{{if .Type.Package}}{{.Type.Package}}.{{end}}{{end}}
+
+{{define "return-value" -}}
+  {{.Name}} {
+    {{- range $v := .Fields}}
+      {{$v.Name.Original}}: {{$v.Name.Argument}},
+    {{- end}}
+    }
+{{- end}}

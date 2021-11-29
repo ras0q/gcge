@@ -30,24 +30,18 @@ func NewGeneratorService() GeneratorService {
 	}
 }
 
-var fmap = template.FuncMap{
-	"title": strings.Title,
-}
+var (
+	tmplPath  = "internal/template" // relative to project root
+	tmplFiles = []string{
+		tmplPath + "/main.tmpl",
+		tmplPath + "/constructor.tmpl",
+		tmplPath + "/util.tmpl",
+	}
+)
 
 func (s *generatorService) GenerateConstructors(file *model.File, output string, isPrivate bool) ([]byte, error) {
-	s.Tmpl = template.New("constructor").Funcs(
-		template.FuncMap{
-			"title": strings.Title,
-			"funcName": func(funcName string) string {
-				if !isPrivate {
-					return strings.Title(funcName)
-				}
-
-				return funcName
-			},
-		},
-	)
-	if _, err := s.Tmpl.Parse(model.GenTmpl); err != nil {
+	s.Tmpl = template.New("main.tmpl").Funcs(fmap(isPrivate))
+	if _, err := s.Tmpl.ParseFiles(tmplFiles...); err != nil {
 		return nil, errors.Wrap(err, "Could not parse templates")
 	}
 
@@ -95,4 +89,17 @@ func (s *generatorService) format(w *bytes.Buffer, filename string) ([]byte, err
 	}
 
 	return formatted, nil
+}
+
+func fmap(isPrivate bool) template.FuncMap {
+	return template.FuncMap{
+		"title": strings.Title,
+		"funcName": func(funcName string) string {
+			if isPrivate {
+				return strings.ToLower(funcName[:1]) + funcName[1:]
+			} else {
+				return strings.Title(funcName)
+			}
+		},
+	}
 }
