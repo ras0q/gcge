@@ -38,10 +38,8 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use: "gcg",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return cmd.Usage() //nolint:wrapcheck
-	},
+	Use:     "gcg",
+	Version: "UNSET", // Set by Execute()
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
