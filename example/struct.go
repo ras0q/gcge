@@ -9,10 +9,11 @@ type Hoge struct {
 }
 
 type Fuga struct {
-	C *int
-	D []string
-	E *[]*[]*[]*[]string
-	G interface{}
+	A *int
+	B []string
+	C *[]*[]*[]*[]string
+	D interface{}
+	E map[*Hoge]map[*Fuga]*Hoge
 }
 
 type Foo string

@@ -10,7 +10,7 @@
       "request": "launch",
       "mode": "auto",
       "program": "${workspaceFolder}/main.go",
-      "args": ["gen", "internal/model/file.go", "-o", "tmp.go"]
+      "args": ["gen", "example/struct.go", "-o", "example/gcg_gen.go"]
     }
   ]
 }
