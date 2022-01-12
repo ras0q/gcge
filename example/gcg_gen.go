@@ -15,16 +15,17 @@ func MakeHoge(a int, b Fuga, c Foo) Hoge {
 	}
 }
 
-func NewFuga(c *int, d []string, e *[]*[]*[]*[]string, g interface{}) *Fuga {
-	st := MakeFuga(c, d, e, g)
+func NewFuga(a *int, b []string, c *[]*[]*[]*[]string, d interface{}, e map[*Hoge]map[*Fuga]*Hoge) *Fuga {
+	st := MakeFuga(a, b, c, d, e)
 	return &st
 }
 
-func MakeFuga(c *int, d []string, e *[]*[]*[]*[]string, g interface{}) Fuga {
+func MakeFuga(a *int, b []string, c *[]*[]*[]*[]string, d interface{}, e map[*Hoge]map[*Fuga]*Hoge) Fuga {
 	return Fuga{
+		A: a,
+		B: b,
 		C: c,
 		D: d,
 		E: e,
-		G: g,
 	}
 }

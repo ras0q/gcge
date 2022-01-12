@@ -105,6 +105,11 @@ func (s *analyzerService) parseExpr(f ast.Expr, prefix model.Prefix, isStar bool
 		return s.parseExpr(t.Elt, prefix.Add("[]"), isStar)
 	case *ast.StarExpr:
 		return s.parseExpr(t.X, prefix.Add("*"), isStar)
+	case *ast.MapType:
+		keyType := s.parseExpr(t.Key, "", false)
+		valType := s.parseExpr(t.Value, "", false)
+
+		return model.NewType(isStar, prefix, "", "map["+keyType.String()+"]"+valType.String())
 	default:
 		return model.NewType(isStar, prefix, "", "interface{}")
 	}
