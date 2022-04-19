@@ -1,5 +1,3 @@
-//go:generate go run github.com/Ras96/gcg@latest gen $GOFILE -o gcg_gen.go
-
 package example_test
 
 type Hoge struct {

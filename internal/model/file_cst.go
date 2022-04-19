@@ -3,12 +3,7 @@
 package model
 
 func NewFile(package_ string, imports []Import, structs []Struct) *File {
-	st := MakeFile(package_, imports, structs)
-	return &st
-}
-
-func MakeFile(package_ string, imports []Import, structs []Struct) File {
-	return File{
+	return &File{
 		Package: package_,
 		Imports: imports,
 		Structs: structs,
@@ -16,24 +11,14 @@ func MakeFile(package_ string, imports []Import, structs []Struct) File {
 }
 
 func NewImport(name string, path string) *Import {
-	st := MakeImport(name, path)
-	return &st
-}
-
-func MakeImport(name string, path string) Import {
-	return Import{
+	return &Import{
 		Name: name,
 		Path: path,
 	}
 }
 
 func NewStruct(name string, fields []Field, isPrivate bool) *Struct {
-	st := MakeStruct(name, fields, isPrivate)
-	return &st
-}
-
-func MakeStruct(name string, fields []Field, isPrivate bool) Struct {
-	return Struct{
+	return &Struct{
 		Name:      name,
 		Fields:    fields,
 		IsPrivate: isPrivate,
@@ -41,36 +26,21 @@ func MakeStruct(name string, fields []Field, isPrivate bool) Struct {
 }
 
 func NewField(name Name, type_ Type) *Field {
-	st := MakeField(name, type_)
-	return &st
-}
-
-func MakeField(name Name, type_ Type) Field {
-	return Field{
+	return &Field{
 		Name: name,
 		Type: type_,
 	}
 }
 
 func NewName(original string, argument string) *Name {
-	st := MakeName(original, argument)
-	return &st
-}
-
-func MakeName(original string, argument string) Name {
-	return Name{
+	return &Name{
 		Original: original,
 		Argument: argument,
 	}
 }
 
 func NewType(isStar bool, prefix Prefix, package_ string, name string) *Type {
-	st := MakeType(isStar, prefix, package_, name)
-	return &st
-}
-
-func MakeType(isStar bool, prefix Prefix, package_ string, name string) Type {
-	return Type{
+	return &Type{
 		IsStar:  isStar,
 		Prefix:  prefix,
 		Package: package_,

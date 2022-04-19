@@ -3,12 +3,7 @@
 package example_test
 
 func NewHoge(a int, b Fuga, c Foo) *Hoge {
-	st := MakeHoge(a, b, c)
-	return &st
-}
-
-func MakeHoge(a int, b Fuga, c Foo) Hoge {
-	return Hoge{
+	return &Hoge{
 		A: a,
 		B: b,
 		C: c,
@@ -16,12 +11,7 @@ func MakeHoge(a int, b Fuga, c Foo) Hoge {
 }
 
 func NewFuga(a *int, b []string, c *[]*[]*[]*[]string, d interface{}, e map[*Hoge]map[*Fuga]*Hoge) *Fuga {
-	st := MakeFuga(a, b, c, d, e)
-	return &st
-}
-
-func MakeFuga(a *int, b []string, c *[]*[]*[]*[]string, d interface{}, e map[*Hoge]map[*Fuga]*Hoge) Fuga {
-	return Fuga{
+	return &Fuga{
 		A: a,
 		B: b,
 		C: c,

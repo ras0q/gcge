@@ -1,7 +1,7 @@
 SHELL   := /bin/bash
 
 build:
-	@go build -v ./...
+	@go build -o gcg .
 
 install:
 	@go mod tidy
@@ -16,5 +16,7 @@ add-cmd:
 	@read -p "Command Name > " CMD_NAME && \
 	go run github.com/spf13/cobra/cobra@latest add $$CMD_NAME --config ./.cobra.yml
 
-go-gen:
+go-gen: build
 	@go generate ./...
+	@./gcg gen example/struct.go -o example/gcg_gen.go
+	@./gcg gen internal/model/file.go -o internal/model/file_cst.go
