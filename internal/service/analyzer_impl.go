@@ -7,8 +7,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Ras96/gcg/internal/model"
 	"github.com/pkg/errors"
+	"github.com/ras0q/gcg/internal/model"
 )
 
 const MAXCAP = 1000

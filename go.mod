@@ -1,4 +1,4 @@
-module github.com/Ras96/gcg
+module github.com/ras0q/gcg
 
 go 1.17
 

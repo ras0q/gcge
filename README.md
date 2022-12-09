@@ -10,7 +10,7 @@ Please check [example](./example) directory for more information.
 ## Installation
 
 ```sh
-$ go install github.com/Ras96/gcg@latest
+$ go install github.com/ras0q/gcg@latest
 ```
 
 ## Usage

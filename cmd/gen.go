@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 Ras96 <asymptote.k.k@gmail.com>
+Copyright © 2021 ras0q <asymptote.k.k@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,9 +22,9 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"github.com/Ras96/gcg/internal/handler"
-	"github.com/Ras96/gcg/internal/util/injector"
 	"github.com/pkg/errors"
+	"github.com/ras0q/gcg/internal/handler"
+	"github.com/ras0q/gcg/internal/util/injector"
 	"github.com/spf13/cobra"
 )
 

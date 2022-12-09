@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/Ras96/gcg/internal/model"
+	"github.com/ras0q/gcg/internal/model"
 )
 
 type AnalyzerService interface {

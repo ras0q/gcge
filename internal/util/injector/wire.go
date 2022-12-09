@@ -5,9 +5,9 @@
 package injector
 
 import (
-	"github.com/Ras96/gcg/internal/handler"
-	"github.com/Ras96/gcg/internal/service"
 	"github.com/google/wire"
+	"github.com/ras0q/gcg/internal/handler"
+	"github.com/ras0q/gcg/internal/service"
 )
 
 func NewHandlers() *handler.Handlers {

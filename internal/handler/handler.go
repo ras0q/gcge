@@ -1,6 +1,6 @@
 package handler
 
-import "github.com/Ras96/gcg/internal/service"
+import "github.com/ras0q/gcg/internal/service"
 
 type Handlers struct {
 	Srv *service.Services
